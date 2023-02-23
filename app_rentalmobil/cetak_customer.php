@@ -1,0 +1,54 @@
+<?php
+include 'conn.php';
+include 'header.php';
+$order;
+if(isset($_GET['sort'])){
+    $order = $_GET['sort'];
+} else {
+    $order = "'date_added'";
+}
+$sql = "select * from customer where nama != 'admin' order by $order";
+$query = mysqli_query($conn,$sql);
+// var_dump($GLOBALS);
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Customer</title>
+</head>
+<body>
+    <div class="container mt-3">
+
+            <div class="card-body">
+                <table class="table table-striped table-hover text-center">
+                    <tr class="table-dark">
+                        <td><a style="text-decoration:none;color:white;" href="?sort=kd_customer">Kode Customer</a></td>
+                        <td><a style="text-decoration:none;color:white;" href="?sort=nama">Nama</a></td>
+                        <td><a style="text-decoration:none;color:white;" href="?sort=alamat">Alamat</a></td>
+                        <td><a style="text-decoration:none;color:white;" href="?sort=no_hp">No HP</a></td>
+                    </tr>
+                    <?php
+                    while($customer = mysqli_fetch_assoc($query)){
+                    ?>
+                    <tr>
+                        <td><?=$customer['kd_customer']?></td>
+                        <td><?=ucwords($customer['nama'])?></td>
+                        <td><?=ucwords($customer['alamat'])?></td>
+                        <td><?=$customer['no_hp']?></td>
+                    </tr>
+                    <?php
+                    }
+                    ?>
+                </table>
+                <p id='hide'>Pencet header tabel untuk mengubah urutan</p>
+
+    <button class="btn btn-danger" onclick='history.back()'>&lt Kembali</button></a>
+    <button class="btn btn-warning" onclick='window.print()'>Print</button>
+    
+    </div>
+
+</body>
+</html>
